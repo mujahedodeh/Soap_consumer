@@ -33,13 +33,13 @@ task genJaxb {
 			mkdir(dir: sourcesDir)
 			mkdir(dir: classesDir)
 
-			xjc(destdir: sourcesDir, schema: schema)
-					{
-						arg(value: "-wsdl")
+			xjc(destdir: sourcesDir, schema: schema,
+					package: "com.example.consumingwebservice.wsdl") {
+				arg(value: "-wsdl")
 				produces(dir: sourcesDir, includes: "**/*.java")
 			}
 
-			javac(destdir: classesDir, source: 1.7, target: 1.7, debug: true,
+			javac(destdir: classesDir, source: 1.8, target: 1.8, debug: true,
 					debugLevel: "lines,vars,source",
 					classpath: configurations.jaxb.asPath) {
 				src(path: sourcesDir)
@@ -59,6 +59,7 @@ task genJaxb {
 
 dependencies {
 // tag::dependency[]
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation ('org.springframework.boot:spring-boot-starter-web-services') {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 	}
